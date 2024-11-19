@@ -20,7 +20,7 @@ const Home: NextPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           rel="icon"
-          href="https://res.cloudinary.com/dyap7epew/image/upload/v1732028378/projects/kenksyw6rw1yioatlts2.png"
+          href="https://res.cloudinary.com/dyap7epew/image/upload/c_crop,g_auto,h_1200,w_630/v1732028378/projects/kenksyw6rw1yioatlts2.png"
         />
         <link
           rel="preload"
@@ -78,11 +78,11 @@ const Home: NextPage = () => {
         />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/dyap7epew/image/upload/v1732028378/projects/kenksyw6rw1yioatlts2.png"
+          content="https://res.cloudinary.com/dyap7epew/image/upload/c_crop,g_auto,h_1200,w_630/v1732028378/projects/kenksyw6rw1yioatlts2.png"
         />
         <meta
           name="twitter:image"
-          content="https://res.cloudinary.com/dyap7epew/image/upload/v1732028378/projects/kenksyw6rw1yioatlts2.png"
+          content="https://res.cloudinary.com/dyap7epew/image/upload/c_crop,g_auto,h_1200,w_630/v1732028378/projects/kenksyw6rw1yioatlts2.png"
         />
       </Head>
 
