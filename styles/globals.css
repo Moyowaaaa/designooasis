@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* html{
+  font-size: calc(100vw / 1368 * 10);
+} */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: none;
+  text-rendering: geometricPrecision;
+}
+
+html {
+  padding: 0;
+  margin: 0;
+  overscroll-behavior: none;
+  font-family: "grotesk";
+
+  @media screen and (min-width: 1024px) {
+    font-size: calc(80vw / 1440 * 16);
+  }
+
+  @media screen and (min-width: 1450px) {
+    font-size: 16px;
+  }
+}
+
+@font-face {
+  font-family: "grotesk";
+  src: url("/fonts/MangoGrotesque-Regular.otf");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "grotesk-bold";
+  src: url("/fonts/MangoGrotesque-Bold.otf");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "grotesk-medium";
+  src: url("/fonts/MangoGrotesque-Medium.otf");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "grotesk-thin";
+  src: url("/fonts/MangoGrotesque-Thin.otf");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "grotesk-light";
+  src: url("/fonts/MangoGrotesque-Light.otf");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/fonts/Satoshi-Regular.otf");
+  font-display: swap;
+}
+
+::-webkit-scrollbar {
+  scroll-behavior: smooth;
+}
+/* Works on Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 4px;
+  scroll-behavior: smooth;
+  background: #8c8c8c;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  border: 3px solid var(--chakra-colors-primary);
+  height: 2px;
+  background: linear-gradient(180deg, #131418 0%, #7b58d3 149%);
+}
+
+p {
+  line-height: 140%;
+}
+
+h1 {
+  font-family: "grotesk-bold";
+  /* font-weight: 700 !important; */
+}
+
+h2 {
+  font-family: "grotesk-medium";
+  font-weight: 500 !important;
+}
+
+#home {
+  background: #182b2a;
+  background-image: url("/images/lineBackground.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#home::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+  background-image: url("/images/static.png");
+  /* z-index: -1; */
+}
+
+#white-home {
+  background: #ffff;
+  background-image: url("/images/lineBackground.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#white-home::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+  background-image: url("/images/static.png");
+  /* z-index: -1; */
+}
+
+/* .home-page {
+  background: #182b2a;
+  background-image: url("/images/Noise.png");
+
+} */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee-wrapper {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.marquee {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 10s linear infinite;
+}
+
+.marquee > div {
+  flex-shrink: 0;
+}
