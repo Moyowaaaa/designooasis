@@ -70,6 +70,12 @@ html {
   font-display: swap;
 }
 
+@font-face {
+  font-family: "manslava";
+  src: url("/fonts/MansalvaRegular.ttf");
+  font-display: swap;
+}
+
 ::-webkit-scrollbar {
   scroll-behavior: smooth;
 }
@@ -179,7 +185,7 @@ h2 {
 
 .toggler {
   position: absolute;
-  top: -6rem;
+  top: -2rem;
 }
 
 @media screen and (min-width: 1020px) {

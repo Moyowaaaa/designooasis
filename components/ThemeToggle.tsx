@@ -7,6 +7,15 @@ const ThemeToggle = () => {
     <>
       <div className="toggler">
         <div className="w-[156px] max-w-[156px] h-[250px] rotate-180  flex flex-col items-center">
+          <p className="rotate-180 pt-2 text-base font-[manslava] dark:text-white text-[#151515] transition-colors duration-400">
+            {theme === "dark"
+              ? `Light mode`
+              : `
+            Dark mode
+            
+            `}
+          </p>
+
           <svg
             width=" 39px"
             height="39px"

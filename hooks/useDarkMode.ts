@@ -1,5 +1,28 @@
 import { useEffect, useState } from "react";
 
+// export const useDarkMode = () => {
+//   const [theme, setTheme] = useState<"light" | "dark">(
+//     () =>
+//       (typeof window !== "undefined" &&
+//         (localStorage.getItem("theme") as "light" | "dark")) ||
+//       "light"
+//   );
+
+//   useEffect(() => {
+//     const root = window.document.documentElement;
+//     const isDark = theme === "dark";
+
+//     root.classList.toggle("dark", isDark);
+//     localStorage.setItem("theme", theme);
+//   }, [theme]);
+
+//   const toggleTheme = () => {
+//     setTheme(theme === "dark" ? "light" : "dark");
+//   };
+
+//   return { theme, toggleTheme };
+// };
+
 export const useDarkMode = () => {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {

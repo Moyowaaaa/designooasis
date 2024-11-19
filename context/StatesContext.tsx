@@ -6,6 +6,7 @@ type Theme = "light" | "dark";
 
 type States = {
   theme: Theme;
+  setTheme: (theme: Theme) => void; // Add the setter function type
   showWorks: boolean;
 };
 
@@ -26,7 +27,7 @@ export const StatesContextProvider = ({
   }, []);
 
   return (
-    <StateContext.Provider value={{ theme, showWorks: false }}>
+    <StateContext.Provider value={{ theme, showWorks: false, setTheme }}>
       {children}
     </StateContext.Provider>
   );
