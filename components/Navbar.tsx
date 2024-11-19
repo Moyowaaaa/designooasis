@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import ThemeToggle from "./ThemeToggle";
+import { useDarkMode } from "../hooks/useDarkMode";
 
 const Navbar = () => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false); // Ensure hydration is complete
+  const { theme, toggleTheme } = useDarkMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,10 +21,16 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    setIsHydrated(true); // Indicate that hydration is complete
+  }, []);
+
+  useEffect(() => {
     setTimeout(() => {
       document.querySelector("#home")?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   }, [router.pathname]);
+
+  if (!isHydrated) return null; // Prevent rendering until hydration is complete
 
   return (
     <div
@@ -37,19 +47,45 @@ const Navbar = () => {
       <div className="w-11/12 lg:w-full lg:max-w-[90rem] xl:max-w-[77rem] mx-auto flex items-center justify-between text-[1rem]">
         {/* Logo */}
         <div onClick={() => router.push("/white")} className="cursor-pointer">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="46"
-            viewBox="0 0 32 46"
-            fill="none"
-          >
-            <path
-              d="M0 10.4496V0.542373C7.88072 0.617419 9.30676 0.0169643 15.8365 1.74323C26.4704 4.55453 33.2282 16.0079 31.0726 28.0874C30.292 32.2904 24.9181 44.557 11.5584 45.5H0V35.6679H8.85643C11.7005 35.436 13.8851 34.9173 16.4369 33.3412C27.0196 24.4848 19.7393 10.8248 9.68203 10.4496H0Z"
-              fill="white"
-            />
-            <rect y="17.7625" width="10.3575" height="10.3575" fill="white" />
-          </svg>
+          {theme === "light" ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="46"
+              viewBox="0 0 32 46"
+              fill="none"
+            >
+              <path
+                d="M0 10.4496V0.542373C7.88072 0.617419 9.30676 0.0169643 15.8365 1.74323C26.4704 4.55453 33.2282 16.0079 31.0726 28.0874C30.292 32.2904 24.9181 44.557 11.5584 45.5H0V35.6679H8.85643C11.7005 35.436 13.8851 34.9173 16.4369 33.3412C27.0196 24.4848 19.7393 10.8248 9.68203 10.4496H0Z"
+                fill="#FFFFFF"
+              />
+              <rect
+                y="17.7625"
+                width="10.3575"
+                height="10.3575"
+                fill="#FFFFFF"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="46"
+              viewBox="0 0 32 46"
+              fill="none"
+            >
+              <path
+                d="M0 10.4496V0.542373C7.88072 0.617419 9.30676 0.0169643 15.8365 1.74323C26.4704 4.55453 33.2282 16.0079 31.0726 28.0874C30.292 32.2904 24.9181 44.557 11.5584 45.5H0V35.6679H8.85643C11.7005 35.436 13.8851 34.9173 16.4369 33.3412C27.0196 24.4848 19.7393 10.8248 9.68203 10.4496H0Z"
+                fill="#151515"
+              />
+              <rect
+                y="17.7625"
+                width="10.3575"
+                height="10.3575"
+                fill="#151515"
+              />
+            </svg>
+          )}
         </div>
 
         <div className="marquee-wrapper overflow-hidden relative w-[40rem] lg:ml-24 max-w-[40rem]">
@@ -57,7 +93,7 @@ const Navbar = () => {
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="flex items-center gap-[10px] min-w-max pl-6"
+                className="flex items-center gap-[10px] min-w-max pl-6 dark:text-white text-[#151515]"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -105,10 +141,11 @@ const Navbar = () => {
           </div>
         </div>
 
-        <button className="h-max w-max py-[0.2rem] px-[2.75rem] border-2 border-[#FFF] flex items-center justify-center text-[2.125rem]">
+        <button className="h-max w-max py-[0.2rem] px-[2.75rem]  flex items-center justify-center text-[2.125rem] border-2 dark:border-[#FFF] border-[#151515] dark:text-white text-[#151515] transition-colors duration-900">
           Works
         </button>
       </div>
+      <ThemeToggle />
     </div>
   );
 };
