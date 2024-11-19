@@ -10,17 +10,15 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>
-          Design Ooasis | TRANSFORMING IDEAS INTO IMPACTFUL DIGITAL SOLUTIONS
-        </title>
+        <title>Design Ooasis</title>
         <meta
           name="description"
-          content="Enterprise Data Platform for Generative AI applications"
+          content="TRANSFORMING IDEAS INTO IMPACTFUL DIGITAL SOLUTIONS"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           rel="icon"
-          href="https://tge-data-web.nyc3.cdn.digitaloceanspaces.com/contextdata/images/favicon.ico"
+          href="https://res.cloudinary.com/dyap7epew/image/upload/v1732028378/projects/kenksyw6rw1yioatlts2.png"
         />
         <link
           rel="preload"
@@ -55,28 +53,34 @@ const Home: NextPage = () => {
 
         {/* -----Facebook Meta Tags */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Context Data" />
+        <meta property="og:title" content="Design Ooasis" />
         <meta
           property="og:description"
-          content="Context Data &mdash; Enterprise Data Platform for Generative AI applications"
+          content="Design Ooasis &mdash; TRANSFORMING IDEAS INTO IMPACTFUL DIGITAL SOLUTIONS"
         />
 
         {/* ----Twitter Meta tags */}
-        <meta name="twitter:title" content="Context Data" />
+        <meta name="twitter:title" content="Design Ooasis" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content="https://contextdata.ai/" />
-        <meta property="twitter:url" content="https://contextdata.ai/" />
+        <meta
+          property="twitter:domain"
+          content="https://designooasis-flax.vercel.app/"
+        />
+        <meta
+          property="twitter:url"
+          content="https://designooasis-flax.vercel.app/"
+        />
         <meta
           name="twitter:description"
-          content="Context Data &mdash; Enterprise Data Platform for Generative AI applications"
+          content="Design Ooasis &mdash; TRANSFORMING IDEAS INTO IMPACTFUL DIGITAL SOLUTIONS"
         />
         <meta
           property="og:image"
-          content="https://tge-data-web.nyc3.cdn.digitaloceanspaces.com/contextdata/images/favicon.ico"
+          content="https://res.cloudinary.com/dyap7epew/image/upload/v1732028378/projects/kenksyw6rw1yioatlts2.png"
         />
         <meta
           name="twitter:image"
-          content="https://tge-data-web.nyc3.cdn.digitaloceanspaces.com/contextdata/images/favicon.ico"
+          content="https://res.cloudinary.com/dyap7epew/image/upload/v1732028378/projects/kenksyw6rw1yioatlts2.png"
         />
       </Head>
 
