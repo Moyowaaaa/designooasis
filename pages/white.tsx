@@ -22,13 +22,13 @@ const Home: NextPage = () => {
         />
         <link
           rel="preload"
-          href="/fonts/fonts/PostGrotesk-Book.ttf"
+          href="/fonts/fonts/MangoGrotesque-Regular.otf"
           as="font"
           crossOrigin=""
         />
         <link
           rel="preload"
-          href="/fonts/PostGrotesk-Bold.ttff"
+          href="/fonts/MangoGrotesque-Bold.otf"
           as="font"
           crossOrigin=""
         />
