@@ -1,11 +1,34 @@
+"use client";
+import { useContext, useEffect, useRef } from "react";
 import { useDarkMode } from "../hooks/useDarkMode";
+import { StateContext } from "../context/StatesContext";
+import gsap from "gsap";
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useDarkMode();
+  const { showWorks } = useContext(StateContext);
+  const togglerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (showWorks) {
+      gsap.to(togglerRef.current, {
+        y: "-8dvh",
+        ease: "power3.inOut",
+        duration: 2,
+      });
+    } else if (!showWorks) {
+      gsap.to(togglerRef.current, {
+        y: 0,
+        ease: "power3.inOut",
+        duration: 1,
+        delay: 0.5,
+      });
+    }
+  }, [showWorks]);
 
   return (
     <>
-      <div className="toggler">
+      <div className="toggler" ref={togglerRef}>
         <div className="w-[156px] max-w-[156px] h-[250px] rotate-180  flex flex-col items-center">
           <p className="rotate-180 pt-2 text-base font-[manslava] dark:text-white text-[#151515] transition-colors duration-400">
             {theme === "dark"
@@ -65,13 +88,6 @@ const ThemeToggle = () => {
         </div>
       </div>
     </>
-    // <button
-    //   onClick={toggleTheme}
-    //   className="p-2 rounded bg-gray-200 dark:bg-gray-800"
-    //   aria-label="Toggle Theme"
-    // >
-    //   {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
-    // </button>
   );
 };
 

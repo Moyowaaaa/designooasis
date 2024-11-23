@@ -1,27 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ThemeToggle from "./ThemeToggle";
 import { useDarkMode } from "../hooks/useDarkMode";
+import { StateContext } from "../context/StatesContext";
 
 const Navbar = () => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false); // Ensure hydration is complete
   const { theme, toggleTheme } = useDarkMode();
+  const { currentTheme, setShowWorks, showWorks } = useContext(StateContext);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    setIsHydrated(true); // Indicate that hydration is complete
+    setIsHydrated(true);
   }, []);
 
   useEffect(() => {
@@ -30,11 +31,17 @@ const Navbar = () => {
     }, 100);
   }, [router.pathname]);
 
-  if (!isHydrated) return null; // Prevent rendering until hydration is complete
+  if (!isHydrated) return null;
+
+  console.log({ showWorks });
+
+  const openWorksModal = () => {
+    setShowWorks(!showWorks);
+  };
 
   return (
     <div
-      className={`fixed top-[1.875rem] z-20 w-full ${
+      className={`fixed top-[1.875rem] z-[80] w-full ${
         router.pathname === "/"
           ? "nav text-[#E5E7EB]"
           : "bg-[#ffffff] text-[#374151] border-b-2 border-b-[#F7F9FC]"
@@ -45,8 +52,7 @@ const Navbar = () => {
       }`}
     >
       <div className="w-11/12 lg:w-full lg:max-w-[90rem] xl:max-w-[77rem] mx-auto flex items-center justify-between text-[1rem]">
-        {/* Logo */}
-        <div onClick={() => router.push("/white")} className="cursor-pointer">
+        <div className="cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -120,8 +126,15 @@ const Navbar = () => {
           </div>
         </div>
 
-        <button className="h-max w-max py-[0.2rem] px-[2.75rem]  flex items-center justify-center text-[2.125rem] border-2 dark:border-[#FFF] border-[#151515] dark:text-white text-[#151515] transition-colors duration-900">
-          Works
+        <button
+          className={`${
+            currentTheme === "dark" && "dark-button"
+          }  flex items-center justify-center gap-[10px] h-max w-max  py-[0.2rem] px-[2.75rem]  border-2 text-[2.125rem]  dark:border-[#FFF] border-[#151515]  transition-colors duration-900`}
+          onClick={() => openWorksModal()}
+        >
+          <span>
+            <p>Works</p>
+          </span>
         </button>
       </div>
       <ThemeToggle />

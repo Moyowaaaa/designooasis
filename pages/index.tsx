@@ -4,21 +4,74 @@ import Head from "next/head";
 import Image from "next/image";
 import PageContentLayout from "../layouts/PageContent";
 import Navbar from "../components/Navbar";
-import { useContext, useEffect, useState } from "react";
-import { StateContext } from "../context/StatesContext";
-import ThemeToggle from "../components/ThemeToggle";
+import { useContext, useEffect, useRef, useState } from "react";
+
 import { useDarkMode } from "../hooks/useDarkMode";
+import { StateContext } from "../context/StatesContext";
+import gsap from "gsap";
+import WorkGallery from "../components/works/WorkGallery";
 
 const Home: NextPage = () => {
   const currentYear = new Date().getFullYear();
+  const { currentTheme, showWorks } = useContext(StateContext);
   const { theme, toggleTheme } = useDarkMode();
-  const [isHydrated, setIsHydrated] = useState(false); // Ensure hydration is complete
+  const [isHydrated, setIsHydrated] = useState(false);
+  const pageContentRef = useRef<HTMLDivElement | null>(null);
+  const openTl = gsap.timeline({ paused: true });
+  const closeTl = gsap.timeline({ paused: true });
+  const overlayRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    setIsHydrated(true); // Indicate that hydration is complete
+    setIsHydrated(true);
   }, [toggleTheme]);
 
-  if (!isHydrated) return null; // Prevent rendering until hydration is complete
+  const showWorksModal = () => {
+    if (!overlayRef.current) return;
+    gsap.set(overlayRef.current, { display: "flex" });
+
+    openTl.to(
+      overlayRef.current,
+      { top: 0, duration: 2, ease: "expo.inOut" },
+      "-0.5"
+    );
+  };
+
+  const removeWorksModal = () => {
+    if (!overlayRef.current) return;
+    gsap.set(overlayRef.current, { display: "flex" });
+
+    closeTl.to(
+      overlayRef.current,
+      {
+        top: "-100%",
+        duration: 1.5,
+        ease: "expo.inOut",
+        onComplete: () => {
+          gsap.set(overlayRef.current, { display: "none", top: "100%" });
+        },
+      },
+      "+=0.5"
+    );
+  };
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    if (!overlayRef.current) return;
+    if (showWorks) {
+      showWorksModal();
+      openTl.play();
+    } else if (!showWorks) {
+      removeWorksModal();
+      closeTl.play();
+    }
+
+    return () => {
+      openTl?.current?.kill();
+      closeTl?.current?.kill();
+    };
+  }, [showWorks]);
+
+  if (!isHydrated) return null;
 
   return (
     <>
@@ -104,7 +157,10 @@ const Home: NextPage = () => {
           className="home-page dark:bg-[#182b2a] bg-[white] h-screen flex items-center flex-col  relative  justify-center transition-colors duration-900"
           id="home"
         >
-          <div className="w-max  flex flex-col items-center justify-center w-[31.25rem] gap-[2rem]">
+          <div
+            className="w-max  flex flex-col items-center justify-center w-[31.25rem] gap-[2rem]"
+            ref={pageContentRef}
+          >
             <h1 className="font-[400] font-[grotesk-light] dark:text-white text-[#151515] transition-colors duration-900 text-[9.375rem] leading-[100%] text-center">
               Design <br />
               <span className="font-[grotesk-bold] text-[12rem] text-[#43DC4D]">
@@ -113,9 +169,13 @@ const Home: NextPage = () => {
             </h1>
 
             <button
-              className={`flex items-center justify-center gap-[10px] p-[0.8rem] border-2  w-[15rem] text-[1.875rem]  dark:border-[#FFF] border-[#151515] dark:text-white text-[#151515] transition-colors duration-900`}
+              className={`${
+                currentTheme === "dark" && "dark-button"
+              }  flex items-center justify-center gap-[10px] p-[0.8rem] border-2  w-[15rem] text-[1.875rem]  dark:border-[#FFF] border-[#151515]  transition-colors duration-900`}
             >
-              <p>START A PROJECT</p>
+              <span>
+                <p>START A PROJECT</p>
+              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="25"
@@ -125,7 +185,6 @@ const Home: NextPage = () => {
               >
                 <path
                   d="M24.5 4.5L17 0.169873V8.83013L24.5 4.5ZM0.5 5.25H17.75V3.75H0.5V5.25Z"
-                  // fill={theme === "light" ? "#151515" : "#FFFFFF"}
                   className="dark:fill-[#ffffff]  fill-[#151515]  transition-colors duration-900"
                 />
               </svg>
@@ -169,6 +228,14 @@ const Home: NextPage = () => {
               © designooasis, {currentYear}
             </p>
           </div>
+        </div>
+
+        <div
+          className="page-transition fixed z-[60] top-full left-0 w-screen h-screen px-[5%] bg-white dark:bg-[black] hidden items-center justify-center "
+          ref={overlayRef}
+          id="overlay"
+        >
+          <WorkGallery />
         </div>
       </PageContentLayout>
     </>
