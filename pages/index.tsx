@@ -43,7 +43,7 @@ const Home: NextPage = () => {
     closeTl.to(
       overlayRef.current,
       {
-        top: "-100%",
+        top: "100%",
         duration: 1.5,
         ease: "expo.inOut",
         onComplete: () => {

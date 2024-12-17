@@ -333,4 +333,11 @@ button:hover:after {
   background-repeat: no-repeat;
   background-size: cover;
   filter: grayscale(2) brightness(1);
+  box-shadow: 5px 10px #888888;
+}
+
+.hamburger path {
+  fill: none;
+  stroke: white;
+  stroke-linecap: round;
 }

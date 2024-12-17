@@ -120,7 +120,7 @@ const Navbar = () => {
                     </filter>
                   </defs>
                 </svg>
-                <p> accepting new projects—let's collaborate!</p>
+                <p> accepting new projects-let&apos;s collaborate!</p>
               </div>
             ))}
           </div>
@@ -135,6 +135,17 @@ const Navbar = () => {
           <span>
             <p>Works</p>
           </span>
+
+          <svg
+            viewBox="0 0 12 10"
+            className="hamburger hidden"
+            height="40px"
+            width="40px"
+          >
+            <path d="M10,2 L2,2" className="bar1"></path>
+            <path d="M2,5 L10,5" className="bar2"></path>
+            <path d="M10,8 L2,8" className="bar3"></path>
+          </svg>
         </button>
       </div>
       <ThemeToggle />

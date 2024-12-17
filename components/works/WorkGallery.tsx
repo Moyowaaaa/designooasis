@@ -7,27 +7,36 @@ import WorkCard, { work } from "./WorkCard";
 
 const WorkGallery = () => {
   const projects = [
-    { image: "/images/abundance", title: "Abundance" },
-    { image: "/images/moniezone", title: "Moniezone" },
-    { image: "/images/jordan", title: "Jordan" },
-    { image: "/images/ajo", title: "Ajo" },
-    { image: "/images/options", title: "Options" },
-    { image: "/images/bliplat", title: "Bliplat Logistics" },
+    {
+      image: "/images/abundanceLogo",
+      title: "Abundance Food Farms",
+
+      desc: ["Web Design", "Development", "CopyWriting"],
+    },
+    { image: "/images/JN", title: "Jordan" },
+
+    {
+      image: "",
+      title: "Moniezone",
+      desc: ["Web Design", "Development", "Mobile App Design"],
+    },
+    { image: "", title: "Ajo" },
+    { image: "", title: "Options" },
+    { image: "", title: "Bliplat Logistics" },
   ] as work[];
+  const [currentProject, setCurrentProject] = useState<work | null>(null);
 
-  const [currentBackground, setCurrentBackground] = useState<string>("");
-
-  const backgroundImage = useMemo(() => {
-    if (currentBackground)
+  const selectedWork = useMemo(() => {
+    if (currentProject)
       return {
-        currentBackground,
+        currentProject,
       };
     else {
-      return "none";
+      return null;
     }
-  }, [currentBackground]);
+  }, [currentProject]);
 
-  console.log([{ currentBackground }, { backgroundImage }]);
+  // console.log([{ currentBackground }, { backgroundImage }]);
 
   return (
     <div className="h-full w-full flex absolute flex-col justify-center ">
@@ -42,39 +51,54 @@ const WorkGallery = () => {
       <div
         className="fixed  top-0 h-screen w-full  "
         id="jumbotron"
-        style={{ backgroundImage: `url(${currentBackground}Large.png)` }}
+        style={{
+          backgroundImage: `url(${selectedWork?.currentProject}Large.png)`,
+        }}
       ></div>
       <div className="h-full w-full  flex flex-col justify-center">
-        <div className="flex items-center gap-[0.5rem] w-10/12 mx-auto h-[25rem] ">
+        <div className="flex items-center gap-[0.5rem] w-10/12 mx-auto h-[25rem] relative">
           {projects?.map((p, index) => (
             <div
               className="hover-image"
               key={index}
-              onMouseEnter={() => setCurrentBackground(p.image)}
-              onMouseLeave={() => setCurrentBackground("none")}
+              onMouseEnter={() => setCurrentProject(p)}
+              onMouseLeave={() => setCurrentProject(null)}
             >
-              <div className="h-full w-full relative ">
-                <Image
-                  src={`${p.image}.png`}
+              <div className="h-full w-full shadow-xl relative dark:bg-black bg-white flex items-center justify-center">
+                {/* <Image
+                  src={`${p.image}.svg`}
                   alt={`Project ${p.title}`}
                   fill
-                  className="absolute object-cover w-full"
-                />
-              </div>
-
-              <div className="flex items-center w-full justify-between dark:text-white text-black  transition-colors duration-900 border-2 border-[red] ">
-                <h1 className="text-3xl ">{p.title}</h1>
-                {p?.desc?.map((d, i) => (
-                  <p
-                    className="text-[14px] dark:text-[#EAEAEA] font-[satoshi] font-[400] transition-colors duration-100"
-                    key={i}
-                  >
-                    {d}
-                  </p>
-                ))}
+                  className=" object-contain w-full "
+                /> */}
+                <p>Project</p>
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      <div className="absolute bottom-12 w-full   py-4">
+        <div className="w-10/12 mx-auto  justify-between">
+          {currentProject && (
+            <div className="flex items-center w-full justify-between dark:text-white text-black  transition-colors duration-900  ">
+              <h1 className="text-3xl ">Project Title</h1>
+
+              {/* <div className="flex gap-2 items-center">
+                {currentProject &&
+                  currentProject?.desc?.map((d, i) => (
+                    <p
+                      className="text-[14px] dark:text-[#EAEAEA] font-[satoshi] font-[400] transition-colors duration-100"
+                      key={i}
+                    >
+                      {d}
+                    </p>
+                  ))}
+              </div> */}
+            </div>
+          )}
+
+          <p></p>
         </div>
       </div>
     </div>
