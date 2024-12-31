@@ -62,7 +62,7 @@ const Navbar = () => {
         ease: "power4.inOut",
       },
 
-      "-=1.8"
+      "-=1.85"
     );
   };
 
@@ -238,6 +238,24 @@ const Navbar = () => {
           </span>
 
           <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="hamburger absolute opacity-0"
+            height="40px"
+            width="40px"
+            ref={buttonSvg}
+          >
+            <path
+              d="M18 6L6 18M6 6L18 18"
+              className="bar1 stroke-[black] dark:stroke-[white]  transition-colors duration-900"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+
+          {/* <svg
             viewBox="0 0 12 10"
             className="hamburger absolute opacity-0"
             height="40px"
@@ -256,7 +274,7 @@ const Navbar = () => {
               d="M10,8 L2,8"
               className="bar3 stroke-[black] dark:stroke-[white]  transition-colors duration-900"
             ></path>
-          </svg>
+          </svg> */}
         </button>
       </div>
       <ThemeToggle />

@@ -23,7 +23,7 @@ export const StatesContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [currentTheme, setCurrentTheme] = useState<Theme>("light");
+  const [currentTheme, setCurrentTheme] = useState<Theme>("dark");
   const [showWorks, setShowWorks] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {

@@ -15,7 +15,7 @@ const WorkGallery = () => {
     { image: "/images/abundance", title: "Abundance Food Farms" },
     {
       image: "/images/moniezone",
-      title: "Moniezone Finance",
+      title: "Monezone Credit",
       bgColor: "#FAB716",
     },
     { image: "/images/jordann", title: "Jordan's Tade", bgColor: "#5F23DA" },
