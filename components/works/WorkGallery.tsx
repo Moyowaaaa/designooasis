@@ -4,101 +4,134 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 import gsap from "gsap";
 import Image from "next/image";
 import WorkCard, { work } from "./WorkCard";
+import SplitType from "split-type";
 
 const WorkGallery = () => {
+  const target = useRef(null);
+  const portfolioCardRef = useRef<HTMLDivElement | null>(null);
+  const mm = useRef(gsap.matchMedia()); // MatchMedia instance
+
   const projects = [
+    { image: "/images/abundance", title: "Abundance Food Farms" },
     {
-      image: "/images/abundanceLogo",
-      title: "Abundance Food Farms",
-
-      desc: ["Web Design", "Development", "CopyWriting"],
+      image: "/images/moniezone",
+      title: "Moniezone Finance",
+      bgColor: "#FAB716",
     },
-    { image: "/images/JN", title: "Jordan" },
-
+    { image: "/images/jordann", title: "Jordan's Tade", bgColor: "#5F23DA" },
     {
-      image: "",
-      title: "Moniezone",
-      desc: ["Web Design", "Development", "Mobile App Design"],
+      image: "/images/options",
+      title: "Options Dynamics Bookstore",
+      bgColor: "#094581",
     },
-    { image: "", title: "Ajo" },
-    { image: "", title: "Options" },
-    { image: "", title: "Bliplat Logistics" },
+    { image: "/images/bliplat", title: "Bliplat Logistics" },
   ] as work[];
-  const [currentProject, setCurrentProject] = useState<work | null>(null);
 
-  const selectedWork = useMemo(() => {
-    if (currentProject)
-      return {
-        currentProject,
-      };
-    else {
-      return null;
+  const [currentProject, setCurrentProject] = useState<work | null>(null);
+  const [selectedProject, setSelectedProject] = useState<work | null>(null);
+
+  useEffect(() => {
+    if (currentProject) {
+      setSelectedProject(currentProject);
+    } else {
+      setSelectedProject(null);
     }
   }, [currentProject]);
 
-  // console.log([{ currentBackground }, { backgroundImage }]);
+  const onHoverAnimation = (project: any, card: HTMLDivElement) => {
+    setCurrentProject(project);
+
+    const textElement = card.querySelector("#project-desc");
+    if (textElement) {
+      mm.current.add("(min-width: 1020px)", () => {
+        gsap.killTweensOf(textElement);
+        gsap.fromTo(
+          textElement,
+          { opacity: 0, yPercent: 20, display: "none" },
+          {
+            opacity: 1,
+            yPercent: 0,
+            duration: 0.6,
+            display: "flex",
+            ease: "power3.out",
+          }
+        );
+      });
+    }
+  };
+
+  const onHoverOutAnimation = (card: HTMLDivElement) => {
+    setCurrentProject(null);
+
+    const textElement = card.querySelector("#project-desc");
+    if (textElement) {
+      mm.current.add("(min-width: 1020px)", () => {
+        gsap.killTweensOf(textElement);
+        gsap.to(textElement, {
+          opacity: 0,
+          yPercent: 20,
+          duration: 0.4,
+          display: "none",
+          ease: "power3.in",
+        });
+      });
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      mm.current.revert();
+    };
+  }, []);
 
   return (
-    <div className="h-full w-full flex absolute flex-col justify-center ">
-      {/* <div className="absolute h-screen w-full mx-6 self-center flex flex-col justify-center">
-        <div className="w-full max-w-full overflow-auto flex items-center gap-16 self-center pl-16">
-          {projects.map((project, index) => (
-            <WorkCard key={index} work={project} />
-          ))}
-        </div>
-      </div> */}
-
+    <div className="h-full w-full flex absolute flex-col justify-center">
       <div
-        className="fixed  top-0 h-screen w-full  "
-        id="jumbotron"
+        className="fixed top-0 h-screen w-full flex items-center justify-center"
         style={{
-          backgroundImage: `url(${selectedWork?.currentProject}Large.png)`,
+          background: `${
+            currentProject?.bgColor ? currentProject?.bgColor : "none"
+          }`,
         }}
-      ></div>
-      <div className="h-full w-full  flex flex-col justify-center">
-        <div className="flex items-center gap-[0.5rem] w-10/12 mx-auto h-[25rem] relative">
-          {projects?.map((p, index) => (
+      >
+        <div
+          className={
+            currentProject?.bgColor
+              ? `h-[30rem] w-[30rem] mx-auto`
+              : "h-full w-full"
+          }
+          style={{ backgroundImage: `url(${currentProject?.image}.png)` }}
+          id="jumbotron"
+        ></div>
+      </div>
+      <div className="h-full w-full flex flex-col justify-center  ">
+        <div className="flex items-center gap-[0.5rem] w-10/12 mx-auto h-[28rem]">
+          {projects.map((p, index) => (
             <div
-              className="hover-image"
+              className="hover-image flex flex-col justify-between"
               key={index}
-              onMouseEnter={() => setCurrentProject(p)}
-              onMouseLeave={() => setCurrentProject(null)}
+              onMouseEnter={(e) => onHoverAnimation(p, e.currentTarget)}
+              onMouseLeave={(e) => onHoverOutAnimation(e.currentTarget)}
+              ref={portfolioCardRef}
             >
-              <div className="h-full w-full shadow-xl relative dark:bg-black bg-white flex items-center justify-center">
-                {/* <Image
-                  src={`${p.image}.svg`}
+              <div className="h-[25rem] w-full relative">
+                <Image
+                  src={`${p.image}.png`}
                   alt={`Project ${p.title}`}
                   fill
-                  className=" object-contain w-full "
-                /> */}
-                <p>Project</p>
+                  className="absolute object-cover w-full"
+                />
+              </div>
+              <div
+                id="project-desc"
+                className={`flex items-center w-full justify-between transition-colors duration-900 hidden
+                  ${p.title === projects[4].title ? "text-black" : "text-white"}
+                  `}
+              >
+                <h1 className="text-3xl ">{p.title}</h1>
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      <div className="absolute bottom-12 w-full   py-4">
-        <div className="w-10/12 mx-auto  justify-between">
-          {currentProject && (
-            <div className="flex items-center w-full justify-between dark:text-white text-black  transition-colors duration-900  ">
-              <h1 className="text-3xl ">Project Title</h1>
-
-              {/* <div className="flex gap-2 items-center">
-                {currentProject &&
-                  currentProject?.desc?.map((d, i) => (
-                    <p
-                      className="text-[14px] dark:text-[#EAEAEA] font-[satoshi] font-[400] transition-colors duration-100"
-                      key={i}
-                    >
-                      {d}
-                    </p>
-                  ))}
-              </div> */}
-            </div>
-          )}
-
-          <p></p>
         </div>
       </div>
     </div>

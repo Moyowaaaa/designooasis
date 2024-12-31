@@ -1,10 +1,11 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import ThemeToggle from "./ThemeToggle";
 import { useDarkMode } from "../hooks/useDarkMode";
 import { StateContext } from "../context/StatesContext";
+import gsap from "gsap";
 
 const Navbar = () => {
   const router = useRouter();
@@ -12,6 +13,10 @@ const Navbar = () => {
   const [isHydrated, setIsHydrated] = useState(false); // Ensure hydration is complete
   const { theme, toggleTheme } = useDarkMode();
   const { currentTheme, setShowWorks, showWorks } = useContext(StateContext);
+  const worksButtonRef = useRef<HTMLButtonElement | null>(null);
+  const buttonSvg = useRef(null);
+  const openTl = gsap.timeline();
+  const closeTl = gsap.timeline();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,9 +36,100 @@ const Navbar = () => {
     }, 100);
   }, [router.pathname]);
 
-  if (!isHydrated) return null;
+  const openWorksAnim = () => {
+    if (!worksButtonRef.current) return;
 
-  console.log({ showWorks });
+    gsap.to(".marquee-wrapper", {
+      y: "-8dvh",
+      ease: "power3.inOut",
+      duration: 2,
+      xPercent: -10,
+    });
+
+    openTl.to(worksButtonRef.current.children[0], {
+      opacity: 0,
+      yPercent: -100,
+      duration: 2,
+      ease: "power4.inOut",
+    });
+
+    openTl.to(
+      worksButtonRef.current.children[1],
+      {
+        opacity: 1,
+        yPercent: 0,
+        duration: 2,
+        ease: "power4.inOut",
+      },
+
+      "-=1.8"
+    );
+  };
+
+  const closeWorksAnim = () => {
+    if (!worksButtonRef.current) return;
+    closeTl.to(worksButtonRef.current.children[0], {
+      opacity: 1,
+      yPercent: 0,
+      duration: 2,
+      ease: "power4.inOut",
+    });
+
+    closeTl.to(
+      worksButtonRef.current.children[1],
+      {
+        duration: 1,
+        ease: "power4.inOut",
+        opacity: 0,
+        yPercent: 100,
+      },
+      "-=4"
+    );
+
+    gsap.to(".marquee-wrapper", {
+      y: 0,
+      ease: "power3.inOut",
+      duration: 1,
+      delay: 0.5,
+      xPercent: 0,
+    });
+  };
+
+  const onHoverAnimation = () => {
+    if (!buttonSvg.current) return;
+    if (currentTheme === "dark") {
+      gsap.to([(buttonSvg as any).current.children], {
+        fill: "#151515",
+      });
+    } else {
+      gsap.to([(buttonSvg as any).current.children], {
+        fill: "white",
+      });
+    }
+  };
+
+  const onHoverOutAnimation = () => {
+    if (!buttonSvg.current) return;
+    if (currentTheme === "dark") {
+      gsap.to((buttonSvg as any).current.children, {
+        fill: "#151515",
+      });
+    } else {
+      gsap.to((buttonSvg as any).current.children, {
+        fill: "white",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (showWorks) {
+      openWorksAnim();
+    } else if (!showWorks) {
+      closeWorksAnim();
+    }
+  }, [showWorks]);
+
+  if (!isHydrated) return null;
 
   const openWorksModal = () => {
     setShowWorks(!showWorks);
@@ -62,13 +158,13 @@ const Navbar = () => {
           >
             <path
               d="M0 10.4496V0.542373C7.88072 0.617419 9.30676 0.0169643 15.8365 1.74323C26.4704 4.55453 33.2282 16.0079 31.0726 28.0874C30.292 32.2904 24.9181 44.557 11.5584 45.5H0V35.6679H8.85643C11.7005 35.436 13.8851 34.9173 16.4369 33.3412C27.0196 24.4848 19.7393 10.8248 9.68203 10.4496H0Z"
-              className="dark:fill-[#ffffff]  fill-[#151515]  transition-colors duration-900"
+              className={`dark:fill-[#ffffff]  fill-[#151515]  transition-colors duration-900`}
             />
             <rect
               y="17.7625"
               width="10.3575"
               height="10.3575"
-              className="dark:fill-[#ffffff]  fill-[#151515]  transition-colors duration-900"
+              className={`dark:fill-[#ffffff]  fill-[#151515]  transition-colors duration-900`}
             />
           </svg>
         </div>
@@ -129,22 +225,37 @@ const Navbar = () => {
         <button
           className={`${
             currentTheme === "dark" && "dark-button"
-          }  flex items-center justify-center gap-[10px] h-max w-max  py-[0.2rem] px-[2.75rem]  border-2 text-[2.125rem]  dark:border-[#FFF] border-[#151515]  transition-colors duration-900`}
-          onClick={() => openWorksModal()}
+          }  flex flex-col items-center justify-center gap-[10px] h-max w-max max-h-max overflow-hidden  py-[0.2rem] px-[2.75rem]  border-2 text-[2.125rem]  dark:border-[#FFF] border-[#151515]  transition-colors duration-900`}
+          onClick={() => {
+            openWorksModal();
+          }}
+          ref={worksButtonRef}
+          onMouseEnter={onHoverAnimation}
+          onMouseLeave={onHoverOutAnimation}
         >
-          <span>
+          <span className="min-h-max max-h-max overflow-hidden">
             <p>Works</p>
           </span>
 
           <svg
             viewBox="0 0 12 10"
-            className="hamburger hidden"
+            className="hamburger absolute opacity-0"
             height="40px"
             width="40px"
+            ref={buttonSvg}
           >
-            <path d="M10,2 L2,2" className="bar1"></path>
-            <path d="M2,5 L10,5" className="bar2"></path>
-            <path d="M10,8 L2,8" className="bar3"></path>
+            <path
+              d="M10,2 L2,2"
+              className="bar1 stroke-[black] dark:stroke-[white]  transition-colors duration-900"
+            ></path>
+            <path
+              d="M2,5 L10,5"
+              className="bar2 stroke-[black] dark:stroke-[white]  transition-colors duration-900"
+            ></path>
+            <path
+              d="M10,8 L2,8"
+              className="bar3 stroke-[black] dark:stroke-[white]  transition-colors duration-900"
+            ></path>
           </svg>
         </button>
       </div>

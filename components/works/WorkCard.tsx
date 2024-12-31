@@ -9,6 +9,7 @@ export interface work {
   desc?: string[];
   largeImage?: string;
   svg?: HTMLOrSVGImageElement;
+  bgColor?: string;
 }
 
 const WorkCard = ({ work }: { work: work }) => {
